@@ -98,11 +98,13 @@ l:
 }
 
 func (repo *Repository) getCommit(id sha1) (*Commit, error) {
-	c, ok := repo.commitCache.Get(id.String())
-	if ok {
-		log("Hit cache: %s", id)
-		return c.(*Commit), nil
-	}
+	/*
+		c, ok := repo.commitCache.Get(id.String())
+		if ok {
+			log("Hit cache: %s", id)
+			return c.(*Commit), nil
+		}
+	*/
 
 	data, err := NewCommand("cat-file", "-p", id.String()).RunInDirBytes(repo.Path)
 	if err != nil {
@@ -119,7 +121,7 @@ func (repo *Repository) getCommit(id sha1) (*Commit, error) {
 	commit.repo = repo
 	commit.ID = id
 
-	repo.commitCache.Set(id.String(), commit)
+	// repo.commitCache.Set(id.String(), commit)
 	return commit, nil
 }
 
